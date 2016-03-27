@@ -13,6 +13,7 @@ import payment.utils.MySQLUserDetailsService;
 
 /**
  * Created by Dark on 27.03.2016.
+ * Конфигурация безопасности. Указываем страницы входа, выхода, запрещаем доступ неавторизованным пользователям
  */
 @Configuration
 @EnableWebMvcSecurity

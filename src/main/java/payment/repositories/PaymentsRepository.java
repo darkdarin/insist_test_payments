@@ -5,6 +5,7 @@ import payment.entities.Payment;
 
 /**
  * Created by Dark on 27.03.2016.
+ * Репозиторий работы с платежами
  */
 public interface PaymentsRepository extends CrudRepository<Payment, Long> {
     Iterable<Payment> findByUserId(long user_id);

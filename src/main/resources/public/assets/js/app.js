@@ -1,7 +1,9 @@
 /**
  * Created by Dark on 27.03.2016.
+ * Основной скрипт приложения
  */
 
+//формат вывода даты
 var dateFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -21,6 +23,7 @@ $(function(){
     getPayments();
 });
 
+//перехватываем отправку данных из ajax-формы и посылаем через ajax
 $(document).on('submit', 'form[data-submit="ajax"]', function () {
     var $form = $(this);
     $form.ajaxSubmit({
@@ -31,6 +34,8 @@ $(document).on('submit', 'form[data-submit="ajax"]', function () {
         }
     });
     return false;
+
+    //при нажатии на кнопку подтверждения платежа
 }).on('click', 'a[data-action="approved"]', function(){
     var id = $(this).parents('tr').data('id');
 
@@ -43,6 +48,7 @@ $(document).on('submit', 'form[data-submit="ajax"]', function () {
         error: ajaxError
     });
 
+    //при нажатии на кнопку отмены платежа
 }).on('click', 'a[data-action="cancel"]', function(){
     var id = $(this).parents('tr').data('id');
 
@@ -56,6 +62,7 @@ $(document).on('submit', 'form[data-submit="ajax"]', function () {
     });
 });
 
+//получаем список платежей
 function getPayments() {
     var url = "/payments/";
     switch (context) {
@@ -73,6 +80,7 @@ function getPayments() {
     });
 }
 
+//в случае возникновения ошибки при ajax-запросы
 function ajaxError(data) {
     if (data.responseJSON != undefined) {
         data = data.responseJSON;
@@ -86,16 +94,19 @@ function ajaxError(data) {
     alert('Unknown error');
 }
 
+//успешно добавлен платеж
 function addPayment(data) {
     $('#addPayment').modal('hide');
     $noItems.hide();
     addTableRow(data);
 }
 
+//успешно изменен статус платежа
 function changeStatusPayment(data) {
     updateTableRow(data);
 }
 
+//отображает таблицу платежей
 function showPaymentsTable(data) {
     clearTable();
     $noItems.hide();
@@ -113,28 +124,34 @@ function showPaymentsTable(data) {
     }
 }
 
+//добавляет строку в таблицу платежей
 function addTableRow(obj) {
     console.log(obj);
     $items.append(getTableRow($columns, obj));
 }
 
+//очищает таблицу платежей
 function clearTable() {
     $items.empty();
 }
 
+//удаляет строку из таблицы платежей
 function deleteTableRow(id) {
     $items.find('tr[data-id="' + id + '"]').remove();
 }
 
+//обновляет строку в таблице платежей
 function updateTableRow(data) {
     var row = $items.find('tr[data-id="' + data.id + '"]');
     var newRow = getTableRow($columns, data);
     row.html(newRow.html());
 }
 
+//возвращает разметку строки таблицы
 function getTableRow(columns, obj) {
     var row = $('<tr data-id="' + obj.id + '"></tr>');
 
+    //перебираем столбцы таблицы и в зависимости от типа столбца выводим содержимое
     for (var i = 0; i < columns.length; i++) {
         var html = '';
         var type = $(columns[i]).data('type');
@@ -180,6 +197,7 @@ function getTableRow(columns, obj) {
     return row;
 }
 
+//возвращает разметку ячейки таблицы
 function addCellToRow(row, value) {
     var cell = $('<td></td>');
     cell.html(value);

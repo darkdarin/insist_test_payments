@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * Created by Dark on 27.03.2016.
+ * Модель "Платеж"
  */
 @Entity
 @Table(name = "payments")
@@ -13,6 +14,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    //создатель платежа
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

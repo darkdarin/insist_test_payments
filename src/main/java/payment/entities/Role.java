@@ -8,6 +8,7 @@ import java.util.Set;
 
 /**
  * Created by Dark on 27.03.2016.
+ * Модель "Роль"
  */
 @Entity
 @Table(name = "roles")
@@ -33,6 +34,7 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
+    //каждой роли может принадлежать множество пользователей
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     Set<User> users;

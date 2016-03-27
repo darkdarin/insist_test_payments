@@ -12,6 +12,7 @@ import payment.repositories.UsersRepository;
 
 /**
  * Created by Dark on 27.03.2016.
+ * Сервис авторизации
  */
 @Service
 public class MySQLUserDetailsService implements UserDetailsService {

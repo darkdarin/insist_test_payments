@@ -4,6 +4,7 @@ import java.util.Set;
 
 /**
  * Created by Dark on 27.03.2016.
+ * "Оболочка" для модели User
  */
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
     private User user;
