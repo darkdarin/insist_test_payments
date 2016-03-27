@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Управление платежами</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="/assets/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="/assets/css/style.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Управление платежами</h1>
+
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#addPayment" sec:authorize="hasRole('user')">Добавить платеж</button>
+
+    <table class="table table-striped _items">
+        <thead>
+        <tr>
+            <th data-name="id">#</th>
+            <th data-name="date" data-type="date">Дата</th>
+            <th data-name="purpose">Назначение платежа</th>
+            <th data-name="user" data-type="user" sec:authorize="hasAnyRole('manager','topmanager')">Пользователь</th>
+            <th data-name="status" data-type="status">Статус</th>
+            <th data-type="commands" sec:authorize="hasAnyRole('manager','topmanager')">Действия</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="alert alert-info _alertNoItems" style="display: none;">
+        Нет ни одного платежа
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-default">Выйти</button>
+    </form>
+
+    <div sec:authorize="hasAnyRole('manager','topmanager')" class="_controls hidden">
+        <a class="btn btn-success" data-action="approved" title="Одобрить"><i class="glyphicon glyphicon-ok"></i></a>
+        <a class="btn btn-danger" data-action="cancel" title="Отклонить"><i class="glyphicon glyphicon-remove"></i></a>
+    </div>
+</div>
+
+<div class="modal fade" id="addPayment" tabindex="-1" role="dialog" aria-labelledby="addPaymentLabel" sec:authorize="hasRole('user')">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form th:action="@{/payments}" method="post" data-submit="ajax" data-submit-action="addPayment">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addPaymentLabel">Добавление платежа</h4>
+                </div>
+                <div class="modal-body" data-submit-data="addPayment">
+                    <div class="form-group">
+                        <label for="purpose">Назначение платежа</label>
+                        <input class="form-control" id="purpose" placeholder="Назначение платежа" name="purpose" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script sec:authorize="hasRole('topmanager')">var context = "topmanager";</script>
+<script sec:authorize="hasRole('manager')">var context = "manager";</script>
+<script sec:authorize="hasRole('user')">var context = "user";</script>
+
+<script type='text/javascript' src='/assets/js/jquery-1.12.2.min.js'></script>
+<script type='text/javascript' src='/assets/js/jquery.form.min.js'></script>
+<script type='text/javascript' src='/assets/js/bootstrap.min.js'></script>
+<script type='text/javascript' src='/assets/js/app.js'></script>
+</body>
+</html>
